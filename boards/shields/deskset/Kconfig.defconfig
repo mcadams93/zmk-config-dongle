@@ -1,0 +1,16 @@
+if SHIELD_DESKSET_DONGLE
+
+config ZMK_KEYBOARD_NAME
+    default "deskset"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif
+
+if SHIELD_DESKSET_DONGLE || SHIELD_DESKSET_SIDECAR || SHIELD_DESKSET_CORNE_LEFT || SHIELD_DESKSET_CORNE_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+endif

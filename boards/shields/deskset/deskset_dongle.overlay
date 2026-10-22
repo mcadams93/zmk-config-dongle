@@ -1,0 +1,19 @@
+#include "deskset.dtsi"
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+    };
+
+    // The dongle has no keys of its own.
+    kscan0: kscan {
+        compatible = "zmk,kscan-blackout";
+    };
+};
+
+&deskset_layout {
+    kscan = <&kscan0>;
+};
+
+#include "deskset_esb_addr.dtsi"
+#include "deskset_zplit.dtsi"

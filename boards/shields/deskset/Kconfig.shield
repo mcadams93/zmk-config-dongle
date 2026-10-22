@@ -1,0 +1,11 @@
+config SHIELD_DESKSET_DONGLE
+  def_bool $(shields_list_contains,deskset_dongle)
+
+config SHIELD_DESKSET_SIDECAR
+  def_bool $(shields_list_contains,deskset_sidecar)
+
+config SHIELD_DESKSET_CORNE_LEFT
+  def_bool $(shields_list_contains,deskset_corne_left)
+
+config SHIELD_DESKSET_CORNE_RIGHT
+  def_bool $(shields_list_contains,deskset_corne_right)

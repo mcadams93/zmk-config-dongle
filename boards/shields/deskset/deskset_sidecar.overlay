@@ -1,0 +1,96 @@
+#include "deskset.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&pinctrl {
+    spi3_default: spi3_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 15)>,
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 13)>;
+        };
+    };
+
+    spi3_sleep: spi3_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 15)>,
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 13)>;
+            low-power-enable;
+        };
+    };
+};
+
+&spi3 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    pinctrl-0 = <&spi3_default>;
+    pinctrl-1 = <&spi3_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
+
+    glidepoint: glidepoint@0 {
+        compatible = "cirque,pinnacle2";
+        reg = <0>;
+        spi-max-frequency = <1000000>;
+        status = "okay";
+
+        data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+
+        data-mode = "absolute";
+        sensitivity = "1x";
+        clipping-enable;
+        scaling-enable;
+        active-range-x-min = <128>;
+        active-range-x-max = <1920>;
+        active-range-y-min = <64>;
+        active-range-y-max = <1472>;
+        scaling-x-resolution = <1024>;
+        scaling-y-resolution = <1024>;
+
+        absolute-relative-multiplier = <12>;
+        absolute-relative-divisor = <40>;
+
+        primary-tap-enable;
+        absolute-tap-max-ms = <200>;
+        absolute-tap-max-movement = <80>;
+        absolute-tap-click-ms = <10>;
+        absolute-tap-drag-enable;
+        absolute-tap-drag-timeout-ms = <300>;
+
+        absolute-secondary-tap-area-width = <520>;
+        absolute-secondary-tap-area-height = <420>;
+
+        absolute-right-edge-scroll-enable;
+        absolute-scroll-zone = <240>;
+        absolute-scroll-divisor = <120>;
+
+        invert-x;
+    };
+};
+
+/ {
+    chosen {
+        zmk,kscan = &sidecar_kscan;
+    };
+
+    sidecar_kscan: sidecar_kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        wakeup-source;
+        input-gpios = <&gpio0 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    };
+};
+
+// Sidecar kscan RC(0,0) -> RC(4,0) = keymap position 42
+&default_transform {
+    row-offset = <4>;
+};
+
+&deskset_layout {
+    kscan = <&sidecar_kscan>;
+};
+
+#include "deskset_esb_addr.dtsi"
+#include "deskset_zplit.dtsi"
+
+&sidecar_split { device = <&glidepoint>; };
+&corne_tpad_split { status = "disabled"; };

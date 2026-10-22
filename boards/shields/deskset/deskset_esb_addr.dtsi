@@ -1,0 +1,9 @@
+/ {
+    esb_split {
+        compatible = "zmk,esb-split";
+        // Unique to this device set; every deskset device must share these.
+        base-addr-0 = <0x3D 0x71 0xC6 0x9E>;
+        base-addr-1 = <0xB2 0x4F 0x17 0xE8>;
+        addr-prefix = <0xE7 0xC2 0xC3 0xC4 0xC5 0xC6 0xC7 0xC8>;
+    };
+};
