@@ -1,0 +1,114 @@
+#include "deskset.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&pinctrl {
+    spi1_default: spi1_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 29)>;
+        };
+    };
+
+    spi1_sleep: spi1_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 29)>;
+            low-power-enable;
+        };
+    };
+};
+
+&spi1 {
+    status = "okay";
+    pinctrl-0 = <&spi1_default>;
+    pinctrl-1 = <&spi1_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;
+
+    glidepoint: glidepoint@0 {
+        compatible = "cirque,pinnacle2";
+        reg = <0>;
+        spi-max-frequency = <1000000>;
+        status = "okay";
+
+        data-ready-gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;
+
+        data-mode = "absolute";
+        sensitivity = "1x";
+        clipping-enable;
+        scaling-enable;
+        active-range-x-min = <128>;
+        active-range-x-max = <1920>;
+        active-range-y-min = <64>;
+        active-range-y-max = <1472>;
+        scaling-x-resolution = <1024>;
+        scaling-y-resolution = <1024>;
+
+        absolute-relative-multiplier = <12>;
+        absolute-relative-divisor = <40>;
+
+        primary-tap-enable;
+        absolute-tap-max-ms = <200>;
+        absolute-tap-max-movement = <80>;
+        absolute-tap-click-ms = <10>;
+        absolute-tap-drag-enable;
+        absolute-tap-drag-timeout-ms = <300>;
+
+        absolute-secondary-tap-area-width = <520>;
+        absolute-secondary-tap-area-height = <420>;
+
+        absolute-right-edge-scroll-enable;
+        absolute-scroll-zone = <240>;
+        absolute-scroll-divisor = <120>;
+
+        invert-x;
+        invert-y;
+    };
+};
+
+
+// Aurora Corne right half kscan (copied from badjeff/zmk splitkb_aurora_corne_right.overlay)
+/ {
+    chosen {
+        zmk,kscan = &kscan;
+    };
+
+    kscan: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        wakeup-source;
+        diode-direction = "col2row";
+        row-gpios
+            = <&pro_micro 15 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 14 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 16 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 10 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            ;
+        col-gpios
+            = <&pro_micro 9 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 8 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 7 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 6 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 5 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 4 GPIO_ACTIVE_HIGH>
+            ;
+    };
+};
+
+&deskset_layout {
+    kscan = <&kscan>;
+};
+
+// OLED/encoders unused; I2C pins (D2/D3) are reused by the right half's SPI.
+&pro_micro_i2c { status = "disabled"; };
+
+&default_transform {
+    col-offset = <6>;
+};
+
+#include "deskset_esb_addr.dtsi"
+#include "deskset_zplit.dtsi"
+
+&sidecar_split { status = "disabled"; };
+&corne_tpad_split { device = <&glidepoint>; };

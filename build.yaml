@@ -6,4 +6,7 @@ include:
     shield: deskset_sidecar
   - board: xiao_ble//zmk
     shield: settings_reset
-  # Phase 2: deskset_corne_left / deskset_corne_right
+  - board: nice_nano@2.0.0//zmk
+    shield: deskset_corne_left
+  - board: nice_nano@2.0.0//zmk
+    shield: deskset_corne_right

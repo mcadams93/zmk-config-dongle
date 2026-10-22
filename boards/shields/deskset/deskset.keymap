@@ -62,6 +62,12 @@
         input-processors = <&zip_report_rate_limit 1>, <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>;
     };
 
+    corne_tpad_listener: corne_tpad_listener {
+        compatible = "zmk,input-listener";
+        device = <&corne_tpad_split>;
+        input-processors = <&zip_report_rate_limit 1>;
+    };
+
     keymap {
         compatible = "zmk,keymap";
 

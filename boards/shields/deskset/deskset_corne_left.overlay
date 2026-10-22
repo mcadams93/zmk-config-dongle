@@ -1,0 +1,41 @@
+#include "deskset.dtsi"
+
+// Aurora Corne left half kscan (copied from badjeff/zmk splitkb_aurora_corne_left.overlay)
+/ {
+    chosen {
+        zmk,kscan = &kscan;
+    };
+
+    kscan: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        wakeup-source;
+        diode-direction = "col2row";
+        row-gpios
+            = <&pro_micro 6 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 7 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 8 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            , <&pro_micro 9 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+            ;
+        col-gpios
+            = <&pro_micro 16 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 10 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 14 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 15 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 18 GPIO_ACTIVE_HIGH>
+            , <&pro_micro 19 GPIO_ACTIVE_HIGH>
+            ;
+    };
+};
+
+&deskset_layout {
+    kscan = <&kscan>;
+};
+
+// OLED/encoders unused; I2C pins (D2/D3) are reused by the right half's SPI.
+&pro_micro_i2c { status = "disabled"; };
+
+#include "deskset_esb_addr.dtsi"
+#include "deskset_zplit.dtsi"
+
+&sidecar_split { status = "disabled"; };
+&corne_tpad_split { status = "disabled"; };
