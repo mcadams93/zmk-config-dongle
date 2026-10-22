@@ -59,20 +59,56 @@ The firmware uses an internal pull-up on this pin, and the key is active low.
 
 ### Corne Right Wiring
 
-The Corne right trackpad uses the SPI1 bus. The pins come from `deskset_corne_right.overlay`.
+The Corne right trackpad is a Cirque TM040040 (40 mm). It uses the SPI1 bus.
+The pins come from `deskset_corne_right.overlay`.
 
-| nice!nano pin | nRF52840 GPIO | Signal | Trackpad pad |
+| Trackpad pad | Solder point | nRF52840 GPIO | Signal |
 | :--- | :--- | :--- | :--- |
-| D3 | P0.20 | SCK | SCK |
-| D2 | P0.17 | MOSI | SI |
-| D20 | P0.29 | MISO | SO |
-| D19 | P0.02 | CS | SS |
-| D0 | P0.08 | DR (data ready) | DR |
-| VCC | — | Power | VDD |
-| GND | — | Ground | GND |
+| DR | nice!nano pin 029 (D20) | P0.29 | DR (data ready) |
+| SS | nice!nano pin 002 (D19) | P0.02 | CS |
+| SO | nice!nano pin 115 (D18) | P1.15 | MISO |
+| SI | OLED header SDA | P0.17 (D2) | MOSI |
+| SCK | OLED header SCL | P0.20 (D3) | SCK |
+| VDD | OLED header VCC | — | Power |
+| GND | OLED header GND | — | Ground |
 
-> **CAUTION:** Do not install the OLED or the right encoder on the Corne right half.
+The wires are in two groups:
+
+- Three wires go to the nice!nano pins 029, 002 and 115.
+- Four wires go to the OLED header: SDA, SCL, VCC and GND.
+
+#### Mounting Orientation
+
+Install the trackpad face up in its holder.
+Put the FFC connector at the 6 o'clock position.
+This position is toward the thumb keys and the power switch, opposite the nice!nano USB connector.
+The test pads face down toward the nice!nano.
+Seen from above, DR, SS and SO are at the right side of the pad group.
+They are in that order from top to bottom, above the nice!nano pins 029, 002 and 115.
+
+#### Procedure
+
+> **CAUTION:** Do not install R1 and R2 on the Corne right half.
+> R1 and R2 are the 4.7 kΩ pull-up resistors on SDA and SCL.
+
+> **CAUTION:** Do not install the OLED display, the encoder or the RGB LEDs on the Corne right half.
 > They use the same pins as the trackpad. The firmware disables the I2C bus (`&pro_micro_i2c`).
+
+1. Do a continuity test on each trackpad pad.
+2. Solder the DR pad to nice!nano pin 029.
+3. Solder the SS pad to nice!nano pin 002.
+4. Solder the SO pad to nice!nano pin 115.
+
+> **NOTE:** The schematic shows the OLED header order SDA, SCL, VCC, GND.
+> Check the order on the PCB silkscreen before you solder.
+
+5. Solder the SI pad to the OLED header SDA.
+6. Solder the SCK pad to the OLED header SCL.
+7. Solder the VDD pad to the OLED header VCC.
+8. Solder the GND pad to the OLED header GND.
+9. Install the trackpad in its holder with the FFC connector at 6 o'clock.
+
+Optional: you can solder SCK and SI to nice!nano pins D3 (P0.20) and D2 (P0.17) instead. The firmware is the same.
 
 ### Corne Left
 
@@ -234,12 +270,14 @@ CAUTION: All devices must use the same ESB address file. Do not change the addre
 - Double click on macOS with the 30 ms tap pulse.
 - Packet loss on the ESB link, and the effect of 8 retransmits.
 - The Corne pin mapping for the keys and the trackpad.
-- The trackpad direction on the Corne right half.
+- The trackpad direction on the Corne right half with the new mounting (FFC connector at 6 o'clock). Adjust `invert-x` and `invert-y` if necessary.
 - The X inversion on the sidecar.
 - The battery use of the peripherals with the 1 ms link.
 
 ## References
 
+- [Aurora Corne schematic](https://docs.splitkb.com/doc/aurora_corne_rev1.pdf)
+- [Cirque Pinnacle pinout](https://cirquepinnacle.readthedocs.io/en/latest/#pinout)
 - [badjeff/zmk-feature-split-esb](https://github.com/badjeff/zmk-feature-split-esb)
 - [badjeff/zmk-config, branch esb-shield-only](https://github.com/badjeff/zmk-config/tree/esb-shield-only)
 - [nxtkb/cirque-input-module](https://github.com/nxtkb/cirque-input-module)
