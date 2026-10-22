@@ -1,0 +1,40 @@
+# Pins resolved 2026-10-22 from the heads of each project's branch.
+manifest:
+  remotes:
+    - name: badjeff
+      url-base: https://github.com/badjeff
+    - name: nrfconnect
+      url-base: https://github.com/nrfconnect
+    - name: nxtkb
+      url-base: https://github.com/nxtkb
+  projects:
+    # badjeff/zmk main (Zephyr 4.1 / NCS 3.1 based fork)
+    - name: zmk
+      remote: badjeff
+      revision: 641514a97db345f499dd50b0360e594270f008fe
+      import: app/west.yml
+    - name: zmk-feature-split-esb
+      remote: badjeff
+      revision: 314c7cbaf4a74e1add1d6ffc8249de3e29965b8c
+    # v3.1-branch+zmk-fixes @ 9b3d262
+    - name: sdk-nrf
+      remote: badjeff
+      revision: 9b3d2623fdcd9c0fd0284f860beea924568c9826
+      path: nrf
+    # v3.1-branch @ dfadf17
+    - name: nrfxlib
+      remote: nrfconnect
+      revision: dfadf17305d8f000eda9aa74a5b9ff1c5647a23e
+      repo-path: sdk-nrfxlib
+      path: nrfxlib
+    - name: zmk-kscan-blackout
+      remote: badjeff
+      revision: 1ccc6b198ffbf7f1b5ce5e9885637cb08c1c2afb
+    - name: zmk-input-processor-report-rate-limit
+      remote: badjeff
+      revision: b056cb135525933743e2627150fb390f9d4b2461
+    - name: cirque-input-module
+      remote: nxtkb
+      revision: 8af03a4c061580c14ec8745caf0fa2dd3fc7f042
+  self:
+    path: config
