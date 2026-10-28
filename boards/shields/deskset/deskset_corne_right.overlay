@@ -38,16 +38,14 @@
         data-mode = "absolute";
         sensitivity = "1x";
         clipping-enable;
-        scaling-enable;
         active-range-x-min = <128>;
         active-range-x-max = <1920>;
         active-range-y-min = <64>;
         active-range-y-max = <1472>;
-        scaling-x-resolution = <1024>;
-        scaling-y-resolution = <1024>;
 
         absolute-relative-multiplier = <12>;
         absolute-relative-divisor = <40>;
+        absolute-touch-min-z = <12>;
 
         primary-tap-enable;
         absolute-tap-max-ms = <200>;
